@@ -30,6 +30,8 @@ target 'GoodGameGuide' do
   pod 'Firebase/Core', '~> 6.3.0'
   pod 'Firebase/Firestore', '~> 6.3.0'
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   target 'GoodGameGuideTests' do
     inherit! :search_paths
     # Pods for testing

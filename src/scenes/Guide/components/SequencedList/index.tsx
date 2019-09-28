@@ -22,7 +22,7 @@ interface State {
 
 let listRef: FlatList<string>;
 
-class Guide extends React.Component<Props, State> {
+class SequencedList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -153,4 +153,4 @@ class Guide extends React.Component<Props, State> {
   }
 }
 
-export default Guide;
+export default SequencedList;

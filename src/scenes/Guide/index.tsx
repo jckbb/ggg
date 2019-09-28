@@ -1,10 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import Guide from './components/Guide';
+import SequencedList from './components/SequencedList';
 import styles from './styles';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { fetchGuide } from 'services/firebase/guide/actions';
 import { ApplicationState } from 'store';
 import { changeCurrentStep, fetchCurrentStep } from './data/guide/actions';
 import { GuideState } from './data/guide/types';
@@ -12,6 +11,7 @@ import Title from 'components/Title';
 import Subtitle from 'components/Subtitle';
 import { selectBasicGuide } from 'services/firebase/guide/selectors';
 import { BasicGuide as GuideData } from 'services/firebase/guide/types';
+import { NavigationState, NavigationActions } from 'react-navigation';
 
 interface PropsFromState {
   guide: GuideState,
@@ -20,18 +20,25 @@ interface PropsFromState {
 };
 
 interface PropsFromDispatch {
-  getGuide: typeof fetchGuide.request,
   changeCurrentStep: typeof changeCurrentStep,
   getCurrentStep: typeof fetchCurrentStep,
 };
 
-type AllProps = PropsFromDispatch & PropsFromState;
+interface Props {
+  navigation: any
+};
+
+type AllProps = Props & PropsFromDispatch & PropsFromState;
 
 interface State {
   isCurrentItemOffscreen: boolean,
 };
 
-class Main extends React.Component<AllProps, State> {
+class Guide extends React.Component<AllProps, State> {
+  static navigationOptions = {
+    title: 'Guide'
+  };
+
   constructor(props: AllProps) {
     super(props);
 
@@ -44,7 +51,6 @@ class Main extends React.Component<AllProps, State> {
   }
 
   componentDidMount() {
-    this.props.getGuide();
     this.props.getCurrentStep();
   }
 
@@ -73,7 +79,7 @@ class Main extends React.Component<AllProps, State> {
           <Title>{title}</Title>
           <Subtitle>{subtitleContent}</Subtitle>
         </View>
-        <Guide
+        <SequencedList
           data={steps}
           currentStep={currentStep}
           onCurrentIndexChanged={this.handleCurrentIndexChanged}/>
@@ -89,9 +95,8 @@ const mapStateToProps = (state: ApplicationState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  getGuide: () => dispatch(fetchGuide.request()),
   changeCurrentStep: (nextStep: number) => dispatch(changeCurrentStep(nextStep)),
   getCurrentStep: () => dispatch(fetchCurrentStep()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Guide);
