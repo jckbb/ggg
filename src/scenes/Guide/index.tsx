@@ -7,11 +7,10 @@ import { Dispatch } from 'redux';
 import { ApplicationState } from 'store';
 import { changeCurrentStep, fetchCurrentStep } from './data/guide/actions';
 import { GuideState } from './data/guide/types';
-import Title from 'components/Title';
-import Subtitle from 'components/Subtitle';
 import { selectBasicGuide } from 'services/firebase/guide/selectors';
 import { BasicGuide as GuideData } from 'services/firebase/guide/types';
-import { NavigationState, NavigationActions } from 'react-navigation';
+import { NavigationParams, NavigationScreenProp } from 'react-navigation';
+import { NavigationState } from 'react-navigation';
 
 interface PropsFromState {
   guide: GuideState,
@@ -25,7 +24,7 @@ interface PropsFromDispatch {
 };
 
 interface Props {
-  navigation: any
+  navigation: NavigationScreenProp<NavigationState, NavigationParams>
 };
 
 type AllProps = Props & PropsFromDispatch & PropsFromState;
@@ -64,21 +63,10 @@ class Guide extends React.Component<AllProps, State> {
 
   render() {
     const { currentStep } = this.props.guide;
-    const { steps, title } = this.props.data;
-    const isComplete = currentStep >= steps.length;
-    const subtitleContent = !isComplete
-      ? `${currentStep + 1} of ${steps.length}`
-      : 'completed';
-
-    if(currentStep === 0)
-      console.log(currentStep);
+    const { steps } = this.props.data;
 
     return (
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Title>{title}</Title>
-          <Subtitle>{subtitleContent}</Subtitle>
-        </View>
         <SequencedList
           data={steps}
           currentStep={currentStep}
@@ -88,8 +76,8 @@ class Guide extends React.Component<AllProps, State> {
   }
 }
 
-const mapStateToProps = (state: ApplicationState) => ({
-  data: selectBasicGuide(state, '3VguUABwGFKy0634eIwV'),
+const mapStateToProps = (state: ApplicationState, props: AllProps) => ({
+  data: selectBasicGuide(state, props.navigation.getParam('id')),
   guideIds: state.firebase.allIds,
   guide: state.guide
 });
