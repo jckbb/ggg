@@ -71,6 +71,7 @@ class SequencedList extends React.Component<Props, State> {
         index={index}
         currentIndex={currentStep}
         data={item}
+        isComplete={index < currentStep}
         onComplete={this.handleComplete}/>
     );
   }
