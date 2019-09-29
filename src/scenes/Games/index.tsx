@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 import CategoryList from '../../components/CategoryList';
-import { NavigationActions } from 'react-navigation';
+import { NavigationState, NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { selectGames } from 'services/firebase/guide/selectors';
 import { ApplicationState } from 'store';
 import styles from './styles';
@@ -10,7 +10,7 @@ import { fetchGuide } from 'services/firebase/guide/actions';
 import { Dispatch } from 'redux';
 
 interface Props {
-  navigation: typeof NavigationActions,
+  navigation: NavigationScreenProp<NavigationState, NavigationParams>,
   gameList: string[],
   getGuide: typeof fetchGuide.request,
 };
@@ -34,7 +34,7 @@ class Games extends React.Component<Props> {
     const gamePicked = this.props.gameList[index];
 
     this.props.navigation.navigate({
-      routeName: 'guide',
+      routeName: 'guides',
       params: {
         title: gamePicked
       }
