@@ -5,7 +5,6 @@ interface Styles {
   content: TextStyle,
 };
 
-export const STEP_HEIGHT_MAX = 250;
 export const STEP_HEIGHT_MIN = 55;
 export const ANIMATE_DURATION_FAST = 250;
 export const OPACITY_DEFAULT = 1;
